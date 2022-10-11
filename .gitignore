@@ -5,3 +5,4 @@ server/mysql/.env.test
 server/nodemailer/.env
 server/nodemailer/.env.prod
 server/nodemailer/.env.test
+server/node_modules/*
