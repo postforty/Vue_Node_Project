@@ -1,0 +1,7 @@
+
+server/mysql/.env
+server/mysql/.env.prod
+server/mysql/.env.test
+server/nodemailer/.env
+server/nodemailer/.env.prod
+server/nodemailer/.env.test
