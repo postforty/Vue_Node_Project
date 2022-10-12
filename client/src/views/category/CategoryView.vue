@@ -12,19 +12,18 @@
         />
       </div>
       <div class="col-12">
-        <button class="btn btn-primary me-1" @click="getCustomers">조회</button>
-        <button class="btn btn-success me-1" @click="goToCreate">생성</button>
-        <button class="btn btn-primary me-1" @click="doExcel">
-          엑셀다운로드
-        </button>
+        <button class="btn btn-primary me-1" @click="getList">조회</button>
+        <button class="btn btn-success me-1" @click="openModal">생성</button>
+        <button class="btn btn-info me-1" @click="doExcel">엑셀다운로드</button>
       </div>
     </div>
     <table class="table table-striped table-bordered">
       <thead>
         <tr>
-          <th>Name</th>
+          <th>ID</th>
           <th>Name</th>
           <th>Description</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -32,6 +31,10 @@
           <td>{{ item.product_category_id }}</td>
           <td>{{ item.category_name }}</td>
           <td>{{ item.category_description }}</td>
+          <td>
+            <button class="btn btn-success me-1" @click="openModal">수정</button
+            ><button class="btn btn-danger" @click="doDelete">삭제</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -58,28 +61,18 @@ export default {
   },
   unmounted() {},
   methods: {
-    async getCustomers() {
+    async getList() {
       const loader = this.$loading.show({ canCancel: false })
-
-      this.customers = await this.$get(
-        `http://localhost:3000/customers?name_like=${this.searchName}`
-      )
-
+      this.list = await this.$get('/api/product/category')
       loader.hide()
     },
-    goToDetail(id) {
-      this.$router.push({
-        path: '/template/detail',
-        query: { id: id, searchName: this.searchName }
-      })
-      // this.$router.push({ name: 'DetailView', params: { id: id } })
-    },
     doExcel() {
-      this.$ExcelFromTable(this.headers, this.customers, 'customers', {})
+      this.$ExcelFromTable(this.headers, this.list, 'category', {})
     },
-    goToCreate() {
-      this.$router.push({ path: '/template/create' })
-    }
+    doDelete() {},
+    doSave() {},
+    doCreate() {},
+    openModal() {}
   }
 }
 </script>
