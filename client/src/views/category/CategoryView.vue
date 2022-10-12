@@ -36,7 +36,7 @@
               class="btn btn-success me-1"
               data-bs-toggle="modal"
               data-bs-target="#categoryModal"
-              @click="openModal"
+              @click="openModal(item.product_category_id)"
             >
               수정</button
             ><button class="btn btn-danger" @click="doDelete">삭제</button>
@@ -141,7 +141,13 @@ export default {
     doDelete() {},
     doSave() {},
     doCreate() {},
-    openModal() {}
+    openModal(id) {
+      console.log('openModal', this.list)
+      console.log('id', id)
+      this.selectedItem = this.list.filter(
+        (item) => item.product_category_id === id
+      )[0]
+    }
   }
 }
 </script>
