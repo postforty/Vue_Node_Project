@@ -32,12 +32,76 @@
           <td>{{ item.category_name }}</td>
           <td>{{ item.category_description }}</td>
           <td>
-            <button class="btn btn-success me-1" @click="openModal">수정</button
+            <button
+              class="btn btn-success me-1"
+              data-bs-toggle="modal"
+              data-bs-target="#categoryModal"
+              @click="openModal"
+            >
+              수정</button
             ><button class="btn btn-danger" @click="doDelete">삭제</button>
           </td>
         </tr>
       </tbody>
     </table>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="categoryModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">카테고리</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label">Name</label>
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model.trim="selectedItem.category_name"
+                />
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label class="col-sm-3 col-form-label"
+                >category_description</label
+              >
+              <div class="col-sm-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  v-model.trim="selectedItem.category_description"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary">Understood</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -51,7 +115,12 @@ export default {
         { title: 'Description', key: 'category_description' }
       ],
       list: [],
-      searchName: ''
+      searchName: '',
+      selectedItem: {
+        product_category_id: -1,
+        category_name: '',
+        category_description: ''
+      }
     }
   },
   setup() {},
