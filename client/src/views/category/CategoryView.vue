@@ -94,6 +94,7 @@
               type="button"
               class="btn btn-secondary"
               data-bs-dismiss="modal"
+              ref="btnClose"
             >
               닫기
             </button>
@@ -141,7 +142,38 @@ export default {
       this.$ExcelFromTable(this.headers, this.list, 'category', {})
     },
     doDelete() {},
-    doSave() {},
+    doSave() {
+      this.$swal({
+        title: '카테고리 정보를 수정하시겠습니까?',
+        // text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: '취소',
+        confirmButtonText: '저장'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const loader = this.$loading.show({ canCancel: false })
+          const r = await this.$put(
+            `/api/product/category/${this.selectedItem.product_category_id}`,
+            {
+              param: {
+                category_name: this.selectedItem.category_name,
+                category_description: this.selectedItem.category_description
+              }
+            }
+          )
+          loader.hide()
+          //   put을 통해 수정할때는 200
+          if (r.status === 200) {
+            this.$refs.btnClose.click()
+            this.$swal('고객 정보가 저장되었습니다.')
+            this.getList()
+          }
+        }
+      })
+    },
     doCreate() {},
     openModal(id) {
       // 깊은 복사
