@@ -23,6 +23,7 @@
           <th>ID</th>
           <th>Name</th>
           <th>Description</th>
+          <th>Status</th>
           <th></th>
         </tr>
       </thead>
@@ -31,6 +32,7 @@
           <td>{{ item.product_category_id }}</td>
           <td>{{ item.category_name }}</td>
           <td>{{ item.category_description }}</td>
+          <td>{{ item.use_yn }}</td>
           <td>
             <button
               class="btn btn-success me-1"
@@ -40,10 +42,21 @@
             >
               수정</button
             ><button
-              class="btn btn-danger"
+              class="btn btn-danger me-1"
               @click="doDelete(item.product_category_id)"
             >
               삭제
+            </button>
+            <button
+              class="btn btn-warning"
+              @click="
+                changeStatus(
+                  item.product_category_id,
+                  item.use_yn === 'Y' ? 'N' : 'Y'
+                )
+              "
+            >
+              {{ item.use_yn === 'Y' ? '사용중지' : '사용' }}
             </button>
           </td>
         </tr>
@@ -160,11 +173,44 @@ export default {
         if (result.isConfirmed) {
           const loader = this.$loading.show({ canCancel: false })
           const r = await this.$delete(`/api/product/category/${id}`)
+          // const r = await this.$put(`/api/product/category/${id}`, {
+          //   param: { use_yn: 'N' }
+          // })
           loader.hide()
           //   put을 통해 수정할때는 200
           if (r.status === 200) {
             this.$refs.btnClose.click()
             this.$swal('카테고리가 삭제되었습니다.')
+            this.getList()
+          }
+        }
+      })
+    },
+    changeStatus(id, useYN) {
+      let title = '카테고리 사용을 중지하시겠습니까?'
+      if (useYN === 'Y') {
+        title = '카테고리를 다시 사용하시겠습니까?'
+      }
+      this.$swal({
+        title: title,
+        // text: '삭제된 데이터는 복원되지 않습니다.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: '취소',
+        confirmButtonText: '상태변경'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const loader = this.$loading.show({ canCancel: false })
+          const r = await this.$put(`/api/product/category/${id}`, {
+            param: { use_yn: useYN }
+          })
+          loader.hide()
+          //   put을 통해 수정할때는 200
+          if (r.status === 200) {
+            this.$refs.btnClose.click()
+            this.$swal('카테고리가 상태가 변경되었습니다.')
             this.getList()
           }
         }
