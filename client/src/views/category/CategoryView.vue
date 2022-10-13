@@ -13,7 +13,14 @@
       </div>
       <div class="col-12">
         <button class="btn btn-primary me-1" @click="getList">조회</button>
-        <button class="btn btn-success me-1" @click="openModal">생성</button>
+        <button
+          class="btn btn-success me-1"
+          data-bs-toggle="modal"
+          data-bs-target="#categoryModal"
+          @click="openModal"
+        >
+          생성
+        </button>
         <button class="btn btn-info me-1" @click="doExcel">엑셀다운로드</button>
       </div>
     </div>
@@ -113,10 +120,24 @@
               class="btn btn-secondary"
               data-bs-dismiss="modal"
               ref="btnClose"
+              @click="clearSelectedItem"
             >
               닫기
             </button>
-            <button type="button" class="btn btn-primary" @click="doSave">
+            <button
+              type="button"
+              v-if="selectedItem.product_category_id === -1"
+              class="btn btn-primary"
+              @click="doCreate"
+            >
+              생성
+            </button>
+            <button
+              type="button"
+              v-else
+              class="btn btn-primary"
+              @click="doSave"
+            >
               저장
             </button>
           </div>
@@ -173,15 +194,16 @@ export default {
         if (result.isConfirmed) {
           const loader = this.$loading.show({ canCancel: false })
           const r = await this.$delete(`/api/product/category/${id}`)
-          // const r = await this.$put(`/api/product/category/${id}`, {
-          //   param: { use_yn: 'N' }
-          // })
           loader.hide()
           //   put을 통해 수정할때는 200
           if (r.status === 200) {
             this.$refs.btnClose.click()
             this.$swal('카테고리가 삭제되었습니다.')
             this.getList()
+          } else if (r.status === 501) {
+            this.$swal(
+              `삭제하려는 카테고리를 사용하는 제품이 ${r.count}건 존재합니다.`
+            )
           }
         }
       })
@@ -242,20 +264,65 @@ export default {
           //   put을 통해 수정할때는 200
           if (r.status === 200) {
             this.$refs.btnClose.click()
-            this.$swal('고객 정보가 저장되었습니다.')
+            this.$swal('카테고리가 저장되었습니다.')
             this.getList()
           }
         }
       })
     },
-    doCreate() {},
+    doCreate() {
+      this.$swal({
+        title: '카테고리를 생성하시겠습니까?',
+        // text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: '취소',
+        confirmButtonText: '생성'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const loader = this.$loading.show({ canCancel: false })
+          const r = await this.$post('/api/product/category/', {
+            param: {
+              category_name: this.selectedItem.category_name,
+              category_description: this.selectedItem.category_description
+            }
+          })
+          loader.hide()
+          //   put을 통해 수정할때는 200
+          if (r.status === 200) {
+            this.$refs.btnClose.click()
+            this.$swal('카테고리가 생성되었습니다.')
+            this.getList()
+          }
+        }
+      })
+    },
     openModal(id) {
-      // 깊은 복사
-      this.selectedItem = JSON.parse(
-        JSON.stringify(
-          this.list.filter((item) => item.product_category_id === id)[0]
+      // 생성
+      if (id === undefined) {
+        this.selectedItem = {
+          product_category_id: -1,
+          category_name: '',
+          category_description: ''
+        }
+      } else {
+        // 수정
+        // 깊은 복사
+        this.selectedItem = JSON.parse(
+          JSON.stringify(
+            this.list.filter((item) => item.product_category_id === id)[0]
+          )
         )
-      )
+      }
+    },
+    clearSelectedItem() {
+      this.selectedItem = {
+        product_category_id: -1,
+        category_name: '',
+        category_description: ''
+      }
     }
   }
 }
