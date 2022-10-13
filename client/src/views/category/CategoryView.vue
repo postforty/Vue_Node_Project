@@ -95,9 +95,11 @@
               class="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              닫기
             </button>
-            <button type="button" class="btn btn-primary">Understood</button>
+            <button type="button" class="btn btn-primary" @click="doSave">
+              저장
+            </button>
           </div>
         </div>
       </div>
@@ -142,11 +144,12 @@ export default {
     doSave() {},
     doCreate() {},
     openModal(id) {
-      console.log('openModal', this.list)
-      console.log('id', id)
-      this.selectedItem = this.list.filter(
-        (item) => item.product_category_id === id
-      )[0]
+      // 깊은 복사
+      this.selectedItem = JSON.parse(
+        JSON.stringify(
+          this.list.filter((item) => item.product_category_id === id)[0]
+        )
+      )
     }
   }
 }
