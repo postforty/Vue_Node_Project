@@ -22,8 +22,8 @@ router.post("/category/search", async (req, res) => {
   res.send(categoryList);
 });
 
-router.post("/category", async (req, res) => {
-  const result = await mysql.query("categoryInsert", req.body.param);
+router.post("/", async (req, res) => {
+  const result = await mysql.query("supplierInsert", req.body.param);
   res.send(result);
 });
 

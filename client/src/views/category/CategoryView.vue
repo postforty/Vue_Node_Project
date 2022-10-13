@@ -7,7 +7,7 @@
           type="search"
           class="form-control"
           v-model.trim="searchName"
-          @keyup.enter="getCustomers"
+          @keyup.enter="getList"
           placeholder="Name"
         />
       </div>
@@ -17,7 +17,7 @@
           class="btn btn-success me-1"
           data-bs-toggle="modal"
           data-bs-target="#categoryModal"
-          @click="openModal"
+          @click="openModal()"
         >
           생성
         </button>
@@ -174,7 +174,11 @@ export default {
   methods: {
     async getList() {
       const loader = this.$loading.show({ canCancel: false })
-      this.list = await this.$get('/api/product/category')
+      this.list = (
+        await this.$post('/api/product/category/search', {
+          param: `%${this.searchName.toLowerCase()}%`
+        })
+      ).data
       loader.hide()
     },
     doExcel() {
