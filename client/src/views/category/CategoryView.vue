@@ -39,7 +39,12 @@
               @click="openModal(item.product_category_id)"
             >
               수정</button
-            ><button class="btn btn-danger" @click="doDelete">삭제</button>
+            ><button
+              class="btn btn-danger"
+              @click="doDelete(item.product_category_id)"
+            >
+              삭제
+            </button>
           </td>
         </tr>
       </tbody>
@@ -141,7 +146,30 @@ export default {
     doExcel() {
       this.$ExcelFromTable(this.headers, this.list, 'category', {})
     },
-    doDelete() {},
+    doDelete(id) {
+      this.$swal({
+        title: '카테고리를 정말 삭제하시겠습니까?',
+        text: '삭제된 데이터는 복원되지 않습니다.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: '취소',
+        confirmButtonText: '삭제'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const loader = this.$loading.show({ canCancel: false })
+          const r = await this.$delete(`/api/product/category/${id}`)
+          loader.hide()
+          //   put을 통해 수정할때는 200
+          if (r.status === 200) {
+            this.$refs.btnClose.click()
+            this.$swal('카테고리가 삭제되었습니다.')
+            this.getList()
+          }
+        }
+      })
+    },
     doSave() {
       this.$swal({
         title: '카테고리 정보를 수정하시겠습니까?',
