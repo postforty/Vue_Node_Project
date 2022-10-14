@@ -52,9 +52,9 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                :class="{ active: $route.path == '/template/masterdetail' }"
-                @click="goToMenu('/template/masterdetail')"
-                >MasterDetail</a
+                :class="{ active: $route.path == '/order/create' }"
+                @click="goToMenu('/order/create')"
+                >Order</a
               >
             </li>
             <li class="nav-item">
