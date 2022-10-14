@@ -36,21 +36,38 @@
           <th>Price</th>
           <th>Category Name</th>
           <th>Supplier Name</th>
+          <th>Qty</th>
         </tr>
       </thead>
       <tbody>
         <tr :key="product.product_id" v-for="product in productList">
-          <td></td>
+          <td>
+            <input
+              type="checkbox"
+              class="form-check-input"
+              :value="product.product_id"
+              v-model="checkedProduct"
+            />
+          </td>
           <td>{{ product.product_name }}</td>
           <td>{{ $convertNumberFormat(product.original_price, '#,###') }}</td>
           <td>{{ product.category_name }}</td>
           <td>{{ product.supplier_name }}</td>
+          <td>
+            <input
+              type="number"
+              class="form-control"
+              v-model.number="product.order_qty"
+              name=""
+              id=""
+            />
+          </td>
         </tr>
       </tbody>
     </table>
     <table></table>
     <button class="btn btn-secondary me-1" @click="goToList">목록</button>
-    <button class="btn btn-primary" @click="doSave">저장</button>
+    <button class="btn btn-primary" @click="doSave">주문</button>
   </div>
 </template>
 <script>
@@ -75,9 +92,11 @@ export default {
         customer_id: -1,
         shipper_id: -1
       },
+      items: [],
       customerList: [],
       shipperList: [],
-      productList: []
+      productList: [],
+      checkedProduct: []
     }
   },
   setup() {},
@@ -100,12 +119,25 @@ export default {
       // console.log('productList', this.productList)
     },
     async doSave() {
-      if (this.supplier.supplier_name === '') {
-        return this.$swal('Supplier Name을 입력하세요.')
+      if (this.checkedProduct.length === 0) {
+        return this.$swal('제품을 선택하세요.')
       }
 
+      const items = []
+      this.checkedProduct.forEach((productId) => {
+        const product = this.productList.filter(
+          (p) => p.product_id === productId
+        )[0]
+        items.push({
+          product_id: product.product_id,
+          order_qty: product.order_qty
+        })
+      })
+
+      console.log(items)
+
       this.$swal({
-        title: '공급자를 생성 하시겠습니까?',
+        title: '주문을 진행 하시겠습니까?',
         // text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
@@ -117,19 +149,20 @@ export default {
         if (result.isConfirmed) {
           const loader = this.$loading.show({ canCancel: false })
 
-          const r = await this.$post('http://localhost:3000/api/supplier', {
-            param: this.supplier
+          const r = await this.$post('/api/order', {
+            header: this.header,
+            items: this.items
           })
 
           loader.hide()
 
           console.log(r)
           if (r.status === 200) {
-            this.$swal('공급자 정보가 저장되었습니다.')
-            this.$router.push({
-              path: '/supplier/detail',
-              query: { supplier_id: r.data.insertId }
-            })
+            this.$swal('주문이 생성되었습니다.')
+            // this.$router.push({
+            //   path: '/supplier/detail',
+            //   query: { supplier_id: r.data.insertId }
+            // })
           }
         }
       })
