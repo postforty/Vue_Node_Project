@@ -1,0 +1,2 @@
+::1 - - [14/Oct/2022:01:46:34 +0000] "GET /static/image/1665711994824.png HTTP/1.1" 404 169 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+::1 - - [14/Oct/2022:01:47:15 +0000] "GET /static/image/1665712035443.png HTTP/1.1" 404 169 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"

@@ -1,85 +1,63 @@
 <template>
   <div class="container">
     <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Supplier Name</label>
+      <label class="col-sm-2 col-form-label">ID</label>
       <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.supplier_name"
-        />
+        {{ supplier.supplier_id }}
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label class="col-sm-2 col-form-label">Name</label>
+      <div class="col-sm-10">
+        {{ supplier.supplier_name }}
       </div>
     </div>
     <div class="row mb-3">
       <label class="col-sm-2 col-form-label">Business No</label>
       <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.business_no"
-        />
+        {{ supplier.business_no }}
       </div>
     </div>
     <div class="row mb-3">
       <label class="col-sm-2 col-form-label">Representative</label>
       <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.representative_name"
-        />
+        {{ supplier.representative_name }}
       </div>
     </div>
     <div class="row mb-3">
       <label class="col-sm-2 col-form-label">Email</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" v-model.trim="supplier.email" />
+        {{ supplier.email }}
       </div>
     </div>
     <div class="row mb-3">
       <label class="col-sm-2 col-form-label">Phone</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" v-model.trim="supplier.phone" />
+        {{ supplier.phone }}
       </div>
     </div>
     <div class="row mb-3">
       <label class="col-sm-2 col-form-label">Address</label>
       <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.address"
-        />
+        {{ supplier.address }}
       </div>
     </div>
     <div class="row mb-3">
       <label class="col-sm-2 col-form-label">Contact Name</label>
       <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.contact_name"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Contact Phone</label>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.contact_phone"
-        />
+        {{ supplier.contact_name }}
       </div>
     </div>
     <div class="row mb-3">
       <label class="col-sm-2 col-form-label">Contact Email</label>
       <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.contact_email"
-        />
+        {{ supplier.contact_email }}
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label class="col-sm-2 col-form-label">Contact Phone</label>
+      <div class="col-sm-10">
+        {{ supplier.contact_phone }}
       </div>
     </div>
     <button class="btn btn-secondary me-1" @click="goToList">목록</button>
@@ -91,7 +69,7 @@ export default {
   components: {},
   data() {
     return {
-      id: '',
+      supplier_id: '',
       searchName: '',
       supplier: {
         supplier_name: '',
@@ -107,10 +85,19 @@ export default {
     }
   },
   setup() {},
-  created() {},
-  mounted() {},
+  created() {
+    this.supplier_id = this.$route.query.supplier_id
+  },
+  mounted() {
+    this.getSupplier()
+  },
   unmounted() {},
   methods: {
+    async getSupplier() {
+      this.supplier = await this.$get(
+        `http://localhost:3000/api/supplier/${this.supplier_id}`
+      )
+    },
     async doSave() {
       if (this.supplier.supplier_name === '') {
         return this.$swal('Supplier Name을 입력하세요.')
@@ -138,10 +125,7 @@ export default {
           console.log(r)
           if (r.status === 200) {
             this.$swal('공급자 정보가 저장되었습니다.')
-            this.$router.push({
-              path: '/supplier/detail',
-              query: { supplier_id: r.data.insertId }
-            })
+            // this.$router.push({ path: '/template/listtodetail' })
           }
         }
       })
@@ -150,6 +134,7 @@ export default {
     goToList() {
       this.$router.push({
         path: '/supplier/list'
+        // name: 'supplier_detail'
       })
     }
   }
