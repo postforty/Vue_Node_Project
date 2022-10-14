@@ -66,6 +66,7 @@ export default {
   created() {},
   async mounted() {
     this.products = await this.$get('/api/product')
+    console.log(this.products)
   },
   unmounted() {},
   methods: {
