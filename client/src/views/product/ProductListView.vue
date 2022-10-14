@@ -35,7 +35,11 @@
           <rect width="100%" height="100%" fill="#868e96"></rect>
           <div class="card-body">
             <h5 class="card-title">{{ product.product_name }}</h5>
-            <p class="card-text">{{ product.original_price }}</p>
+            <p class="card-text">
+              {{ $convertNumberFormat(product.original_price, '#,###') }} |
+              {{ product.category_name }} |
+              {{ product.supplier_name }}
+            </p>
             <p class="card-text"></p>
             <a @click="goToDetail(product.product_id)" class="btn btn-primary"
               >Detail</a
