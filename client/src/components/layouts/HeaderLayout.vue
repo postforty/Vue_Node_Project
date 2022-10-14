@@ -44,8 +44,8 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                :class="{ active: $route.path == '/product/create' }"
-                @click="goToMenu('/product/create')"
+                :class="{ active: $route.path == '/product/list' }"
+                @click="goToMenu('/product/list')"
                 >Product</a
               >
             </li>

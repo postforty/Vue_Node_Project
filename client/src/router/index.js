@@ -53,7 +53,15 @@ const routes = [
     name: 'product_create',
     component: () =>
       import(
-        /* webpackChunkName: "supplier" */ '../views/product/ProductCreateView.vue'
+        /* webpackChunkName: "product" */ '../views/product/ProductCreateView.vue'
+      )
+  },
+  {
+    path: '/product/list',
+    name: 'product_list',
+    component: () =>
+      import(
+        /* webpackChunkName: "product" */ '../views/product/ProductListView.vue'
       )
   }
 ]

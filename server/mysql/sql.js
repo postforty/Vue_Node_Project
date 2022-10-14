@@ -14,4 +14,5 @@ module.exports = {
   productCountBySupplierID: `select count(*) as count from product where supplier_id=?`,
   supplierDelete: `delete from product_supplier where supplier_id=?`,
   productInsert: `insert into product set ?`,
+  productList: `select * from product`,
 };
