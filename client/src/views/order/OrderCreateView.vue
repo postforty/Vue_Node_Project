@@ -28,6 +28,27 @@
         </select>
       </div>
     </div>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Category Name</th>
+          <th>Supplier Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr :key="product.product_id" v-for="product in productList">
+          <td></td>
+          <td>{{ product.product_name }}</td>
+          <td>{{ $convertNumberFormat(product.original_price, '#,###') }}</td>
+          <td>{{ product.category_name }}</td>
+          <td>{{ product.supplier_name }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table></table>
     <button class="btn btn-secondary me-1" @click="goToList">목록</button>
     <button class="btn btn-primary" @click="doSave">저장</button>
   </div>
@@ -55,13 +76,15 @@ export default {
         shipper_id: -1
       },
       customerList: [],
-      shipperList: []
+      shipperList: [],
+      productList: []
     }
   },
   setup() {},
   created() {
     this.getCustomerList()
     this.getShipperList()
+    this.getProductList()
   },
   mounted() {},
   unmounted() {},
@@ -71,6 +94,10 @@ export default {
     },
     async getShipperList() {
       this.shipperList = await this.$get('/api/shipper')
+    },
+    async getProductList() {
+      this.productList = await this.$get('/api/product')
+      // console.log('productList', this.productList)
     },
     async doSave() {
       if (this.supplier.supplier_name === '') {
