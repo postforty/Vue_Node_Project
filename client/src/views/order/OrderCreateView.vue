@@ -1,85 +1,31 @@
 <template>
   <div class="container">
     <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Supplier Name</label>
+      <label class="col-sm-2 col-form-label">Customer</label>
       <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.supplier_name"
-        />
+        <select class="form-select" v-model="header.customer_id">
+          <option
+            :value="customer.customer_id"
+            :key="customer.customer_id"
+            v-for="customer in customerList"
+          >
+            {{ customer.customer_name }}
+          </option>
+        </select>
       </div>
     </div>
     <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Business No</label>
+      <label class="col-sm-2 col-form-label">Shipper</label>
       <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.business_no"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Representative</label>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.representative_name"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Email</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" v-model.trim="supplier.email" />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Phone</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" v-model.trim="supplier.phone" />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Address</label>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.address"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Contact Name</label>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.contact_name"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Contact Phone</label>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.contact_phone"
-        />
-      </div>
-    </div>
-    <div class="row mb-3">
-      <label class="col-sm-2 col-form-label">Contact Email</label>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          class="form-control"
-          v-model.trim="supplier.contact_email"
-        />
+        <select class="form-select" v-model="header.shipper_id">
+          <option
+            :value="shipper.shipper_id"
+            :key="shipper.shipper_id"
+            v-for="shipper in shipperList"
+          >
+            {{ shipper.shipper_name }}
+          </option>
+        </select>
       </div>
     </div>
     <button class="btn btn-secondary me-1" @click="goToList">목록</button>
@@ -103,14 +49,29 @@ export default {
         contact_email: '',
         business_no: '',
         representative_name: ''
-      }
+      },
+      header: {
+        customer_id: -1,
+        shipper_id: -1
+      },
+      customerList: [],
+      shipperList: []
     }
   },
   setup() {},
-  created() {},
+  created() {
+    this.getCustomerList()
+    this.getShipperList()
+  },
   mounted() {},
   unmounted() {},
   methods: {
+    async getCustomerList() {
+      this.customerList = await this.$get('/api/customer')
+    },
+    async getShipperList() {
+      this.shipperList = await this.$get('/api/shipper')
+    },
     async doSave() {
       if (this.supplier.supplier_name === '') {
         return this.$swal('Supplier Name을 입력하세요.')
