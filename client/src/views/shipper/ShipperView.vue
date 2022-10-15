@@ -30,6 +30,7 @@
           style="display: none"
           ref="file"
           accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          @change="uploadExcel($event.target.files)"
         />
       </div>
     </div>
@@ -183,6 +184,10 @@ export default {
   },
   unmounted() {},
   methods: {
+    async uploadExcel(files) {
+      const r = await this.$upload('/api/upload/excel', files[0])
+      console.log(r)
+    },
     async getList() {
       const loader = this.$loading.show({ canCancel: false })
       this.list = (
