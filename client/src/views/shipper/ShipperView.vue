@@ -47,11 +47,17 @@
         </thead>
         <tbody>
           <tr :key="i" v-for="(item, i) in excelList">
-            <td>{{ item.shipper_name }}</td>
-            <td>{{ item.phone }}</td>
-            <td>{{ item.address }}</td>
-            <td>{{ item.active_yn }}</td>
-            <td>{{ item.delivery_yn }}</td>
+            <td>
+              <input type="text" v-model="item.shipper_name" />
+            </td>
+            <td><input type="text" v-model="item.phone" /></td>
+            <td><input type="text" v-model="item.address" /></td>
+            <td>
+              <input type="text" v-model="item.active_yn" />
+            </td>
+            <td>
+              <input type="text" v-model="item.delivery_yn" />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -215,11 +221,42 @@ export default {
       console.log(this.excelList)
     },
     async uploadData() {
-      const r = await this.$post('/api/shipper', {
-        param: this.excelList
+      const items = []
+      this.excelList.forEach((item) => {
+        items.push([
+          item.shipper_name,
+          item.phone,
+          item.address,
+          item.delivery_yn,
+          item.active_yn
+        ])
       })
 
-      console.log(r)
+      this.$swal({
+        title: '정말 업로드하시겠습니까?',
+        // text: '삭제된 데이터는 복원되지 않습니다.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: '취소',
+        confirmButtonText: '업로드'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const loader = this.$loading.show({ canCancel: false })
+          const r = await this.$post('/api/shipper', {
+            param: items
+          })
+
+          console.log(r)
+
+          loader.hide()
+
+          this.$swal('정상적으로 업로드 되었습니다.')
+          this.excelList = []
+          this.getList()
+        }
+      })
     },
     async getList() {
       const loader = this.$loading.show({ canCancel: false })
