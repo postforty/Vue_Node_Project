@@ -128,6 +128,7 @@ export default {
         const product = this.productList.filter(
           (p) => p.product_id === productId
         )[0]
+
         items.push({
           product_id: product.product_id,
           order_qty: product.order_qty
@@ -135,6 +136,7 @@ export default {
       })
 
       console.log(items)
+      this.items = items
 
       this.$swal({
         title: '주문을 진행 하시겠습니까?',
@@ -157,12 +159,13 @@ export default {
           loader.hide()
 
           console.log(r)
+
           if (r.status === 200) {
             this.$swal('주문이 생성되었습니다.')
-            // this.$router.push({
-            //   path: '/supplier/detail',
-            //   query: { supplier_id: r.data.insertId }
-            // })
+            //   this.$router.push({
+            //     path: '/supplier/detail',
+            //     query: { supplier_id: r.data.insertId }
+            //   })
           }
         }
       })

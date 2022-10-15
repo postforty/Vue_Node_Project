@@ -19,5 +19,5 @@ module.exports = {
   customerList: `select * from customer`,
   shipperList: `select * from product_shipper`,
   orderInsert: `insert into order_header set ?`,
-  orderItemInsert: `insert into order_datail (order_id, product_id, order_qty) values ?`,
+  orderItemInsert: `insert into order_detail (order_id, product_id, order_qty) values ?`,
 };

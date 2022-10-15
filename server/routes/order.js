@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
             res.status(500).send({ err: err2 });
           } else {
             await conn.commit(); // commit 이전까지는 롤백이 가능
-            res.status(200).send(rows);
+            res.status(200).send(rows2);
           }
 
           await conn.release(); // connect pool을 돌려줘야 함
