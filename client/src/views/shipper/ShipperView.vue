@@ -219,6 +219,7 @@ export default {
     async uploadExcel(files) {
       this.excelList = await this.$upload('/api/upload/excel', files[0])
       console.log(this.excelList)
+      this.$refs.file.value = '' // change 이벤트를 빈 값으로 만들어야 두번 이상 엑셀 업로드 가능
     },
     async uploadData() {
       const items = []
