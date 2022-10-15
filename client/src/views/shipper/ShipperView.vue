@@ -22,6 +22,15 @@
           생성
         </button>
         <button class="btn btn-info me-1" @click="doExcel">엑셀다운로드</button>
+        <button class="btn btn-danger" @click="$refs.file.click()">
+          엑셀업로드
+        </button>
+        <input
+          type="file"
+          style="display: none"
+          ref="file"
+          accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        />
       </div>
     </div>
     <table class="table table-striped table-bordered">
