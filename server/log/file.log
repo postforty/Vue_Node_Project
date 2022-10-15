@@ -33,3 +33,7 @@
 ::1 - - [14/Oct/2022:08:54:50 +0000] "GET /static/images/null HTTP/1.1" 404 157 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 ::1 - - [14/Oct/2022:14:16:45 +0000] "GET /static/images/undefined HTTP/1.1" 404 162 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 ::1 - - [14/Oct/2022:14:16:45 +0000] "GET /static/images/null HTTP/1.1" 404 157 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+::1 - - [14/Oct/2022:23:06:21 +0000] "GET /static/images/1651567692968.jpg HTTP/1.1" 404 170 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+::1 - - [14/Oct/2022:23:14:54 +0000] "GET /static/images/1651567692968.jpg HTTP/1.1" 404 170 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+::1 - - [14/Oct/2022:23:17:01 +0000] "GET /static/images/1651567692968.jpg HTTP/1.1" 404 170 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
+::1 - - [15/Oct/2022:01:04:29 +0000] "POST /api/order HTTP/1.1" 500 312 "http://localhost:8080/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
