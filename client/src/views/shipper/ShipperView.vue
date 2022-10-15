@@ -34,7 +34,32 @@
         />
       </div>
     </div>
-    <table class="table table-striped table-bordered">
+    <div v-if="excelList.length > 0">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Active Y/N</th>
+            <th>Delivery Y/N</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr :key="i" v-for="(item, i) in excelList">
+            <td>{{ item.shipper_name }}</td>
+            <td>{{ item.phone }}</td>
+            <td>{{ item.address }}</td>
+            <td>{{ item.active_yn }}</td>
+            <td>{{ item.delivery_yn }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+        <button class="btn btn-warning" @click="uploadData">최종 업로드</button>
+      </div>
+    </div>
+    <table v-else class="table table-striped table-bordered">
       <thead>
         <tr>
           <th>ID</th>
@@ -174,7 +199,8 @@ export default {
         product_category_id: -1,
         category_name: '',
         category_description: ''
-      }
+      },
+      excelList: []
     }
   },
   setup() {},
@@ -185,16 +211,21 @@ export default {
   unmounted() {},
   methods: {
     async uploadExcel(files) {
-      const r = await this.$upload('/api/upload/excel', files[0])
+      this.excelList = await this.$upload('/api/upload/excel', files[0])
+      console.log(this.excelList)
+    },
+    async uploadData() {
+      const r = await this.$post('/api/shipper', {
+        param: this.excelList
+      })
+
       console.log(r)
     },
     async getList() {
       const loader = this.$loading.show({ canCancel: false })
-      this.list = (
-        await this.$post('/api/product/category/search', {
-          param: `%${this.searchName.toLowerCase()}%`
-        })
-      ).data
+      this.list = await this.$get('/api/shipper')
+
+      console.log(this.list)
       loader.hide()
     },
     doExcel() {
